@@ -8,9 +8,10 @@
 
 import UIKit
 
+@available(iOS 17.0, *)
 class ViewController: UIViewController {
     
-let backgroundImageView: UIImageView = {
+    let backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "GreenBackground")
         imageView.contentMode = .scaleAspectFill
@@ -42,19 +43,34 @@ let backgroundImageView: UIImageView = {
         return imageView
     }()
     
-    let rollButton: UIButton = {
+    lazy var rollButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Roll", for: .normal)
         button.layer.cornerRadius = 10
         button.titleLabel?.font = .systemFont(ofSize: 32)
         button.tintColor = .white
         button.backgroundColor = UIColor(red: 143/255, green: 41/255, blue: 37/255, alpha: 1)
+        button.addTarget(self, action: #selector(rollButtonTupped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    @objc func rollButtonTupped() {
+        let arrayDice = [
+            UIImage(named: "DiceOne"),
+            UIImage(named: "DiceTwo"),
+            UIImage(named: "DiceThree"),
+            UIImage(named: "DiceFour"),
+            UIImage(named: "DiceFive"),
+            UIImage(named: "DiceSix"),
+        ]
+        
+        diceOneImageView.image = arrayDice.randomElement() ?? UIImage()
+        diceTwoImageView.image = arrayDice.randomElement() ?? UIImage()
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         view.addSubview(backgroundImageView)
         backgroundImageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
@@ -86,7 +102,10 @@ let backgroundImageView: UIImageView = {
         rollButton.heightAnchor.constraint(equalToConstant: 75).isActive = true
         rollButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
     }
+}
     
-    
+    #Preview {
+        ViewController()
+        
     
 }
